@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Анимация картинок</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      overflow: hidden; /* Отключаем полосы прокрутки на всей странице /
+    }
+    #scrollableDiv {
+      width: 100%;
+      height: 100vh; / Используем весь доступный видимый экран /
+      overflow: hidden; / Скрываем полосу прокрутки внутри #scrollableDiv /
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; / Начало контента будет слева */
+    }
+
+    .scrollable-content {
+      flex-shrink: 0;
+    }
+
+    .scrollable-wrapper {
+      display: flex;
+      animation: scrollAnimation 15s linear infinite;
+    }
+
+    @keyframes scrollAnimation {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-6400px); }
+    }
+
+    #winMessage {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="scrollableDiv">
+    <div class="scrollable-wrapper">
+      <div class="scrollable-content">
+        <img src="100.png" alt="Image 1">
+      </div>
+      <div class="scrollable-content">
+        <img src="500.png" alt="Image 2">
+      </div>
+      <div class="scrollable-content">
+        <img src="1000.png" alt="Image 3">
+      </div>
+      <div class="scrollable-content">
+        <img src="5000.png" alt="Image 4">
+      </div>
+    </div>
+  </div>
+  
+  <div id="winMessage"></div> <!-- Див для вывода сообщения о выигрыше -->
+<!-- Ваш HTML и стили здесь -->
+
+<!-- Ваш HTML и стили здесь -->
+
+<script>
+  // Останавливаем анимацию и удаляем изображения после случайного интервала
+  const scrollableWrapper = document.querySelector(".scrollable-wrapper");
+  const images = document.querySelectorAll(".scrollable-content");
+  const winMessage = document.getElementById("winMessage");
+  const animationDuration = Math.random() * 30000 + 15000; // От 15 до 45 секунд
+  const randomStopTime = Math.random() * (animationDuration - 3000) + 3000; // От 3 до animationDuration миллисекунд
+
+  let isAnimationPaused = false;
+
+  // Функция для сброса анимации и удаления изображений
+  function resetAnimation() {
+    if (!isAnimationPaused) {
+      scrollableWrapper.style.animation = "none";
+
+      // Оставляем случайное изображение
+      const randomIndex = Math.floor(Math.random() * images.length);
+      for (let i = 0; i < images.length; i++) {
+        if (i !== randomIndex) {
+          images[i].style.display = "none"; // Скрываем ненужные изображения
+        }
+      }
+
+      // Выводим сообщение о выигрыше
+      const winningImage = images[randomIndex];
+      const altText = winningImage.querySelector("img").getAttribute("alt");
+      let winnings;
+      if (altText === "Image 1") {
+        winnings = "$100";
+      } else if (altText === "Image 2") {
+        winnings = "$500";
+      } else if (altText === "Image 3") {
+        winnings = "$1000";
+      } else if (altText === "Image 4") {
+        winnings = "$5000";
+      }
+      winMessage.textContent = `Ваш выигрыш составил ${winnings}`;
+
+      // Возобновляем анимацию и показываем изображения через 5 секунд
+      setTimeout(() => {
+        scrollableWrapper.style.animation = "scrollAnimation 15s linear infinite";
+        for (let i = 0; i < images.length; i++) {
+          images[i].style.display = "initial"; // Показываем изображения заново
+        }
+        isAnimationPaused = false;
+      }, 5000);
+    }
+  }
+
+  // Запускаем сброс анимации каждые animationDuration миллисекунд
+  setInterval(resetAnimation, animationDuration);
+</script>
+
+</body>
+</html>
+
+
+</body>
+</html>
