@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Казино-слоты</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slot {
+            width: 100px;
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            transition: all 0.5s;
+            font-size: 24px;
+        }
+
+        .one {
+            color: red;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        button {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 550px;
+        }
+
+        .slot.two {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="slot one">7 7 7 7</div>
+        <div class="slot two">💲💲💲💲</div>
+        <div class="slot three">🔔🔔🔔🔔</div>
+    </div>
+    <button onclick="spinSlots()">Крутить</button>
+    <div id="score">Очки: 0</div>
+
+    <script>
+        let totalScore = 0;
+        const slots = document.querySelectorAll('.slot');
+        const symbols = ['7 7 7 7', '💲💲💲💲', '🔔🔔🔔🔔'];
+
+        function spinSlots() {
+            const results = [];
+            slots.forEach((slot, index) => {
+                setTimeout(() => {
+                    const result = getRandomSymbol();
+                    slot.textContent = result;
+                    results[index] = result;
+                    if (results.filter(res => res === result).length === 3) {
+                        alert("Вы выиграли");
+                        updateScore(100);
+                    }
+                }, 500);
+            });
+        }
+
+        function getRandomSymbol() {
+            return symbols[Math.floor(Math.random() * symbols.length)];
+        }
+
+        function updateScore(points) {
+            totalScore += points;
+            const scoreElement = document.getElementById('score');
+            scoreElement.textContent = `Очки: ${totalScore}`;
+        }
+    </script>
+</body>
+
+</html>
